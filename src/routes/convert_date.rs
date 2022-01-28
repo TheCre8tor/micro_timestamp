@@ -1,7 +1,7 @@
-use actix_web::web;
-use actix_web::{web::Json, Either, Responder};
+use crate::domain::DateParamName;
+use actix_web::{web, HttpResponse};
 use chrono::{NaiveDate, TimeZone, Utc};
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Debug)]
 pub struct Timestamp {
@@ -19,10 +19,7 @@ pub struct BadDataError {
     error: String,
 }
 
-pub async fn convert_date(
-    params: web::Path<DateParam>,
-) -> Either<impl Responder, Json<BadDataError>> {
-
+pub async fn convert_date(params: web::Path<DateParam>) -> HttpResponse {
     /* 1a. A request to /api/:date? with a valid date should return a JSON object
       with a unix key that is a Unix timestamp of the input date in milliseconds  --> Done
 
@@ -39,31 +36,22 @@ pub async fn convert_date(
     */
 
     /* Test Cases -->
-     Elite: /api/2021-04-09
-     Elite: /api/1451001600000
-     1. */
+    Elite: /api/2021-04-09 -- Done
+    Elite: /api/1451001600000
+    1. */
 
-    let _split_params = &params.date.replace('-', " ");
+    let valid_date = match DateParamName::parse(&params.date) {
+        Ok(value) => value,
+        Err(error) => return HttpResponse::BadRequest().json(BadDataError { error }),
+    };
 
-    // let date_list: Vec<u32> = split_params
-    //     .split_inclusive(" ")
-    //     .map(|x| x.trim().parse().unwrap())
-    //     .collect();
-    //
-    // if date_list.len() < 3 {
-    //     return Either::Right(Json(BadDataError {
-    //         error: "Invalid Data".to_string(),
-    //     }));
-    // }
-    //
-    // let process_date = NaiveDate::from_ymd(date_list[0] as i32, date_list[1], date_list[2])
-    //     .and_hms(0, 0, 0);
-    //
-    // let result = Timestamp {
-    //     unix: process_date.timestamp() * 1000,
-    //     utc: Utc::from_utc_datetime(&Utc, &process_date).to_string(),
-    // };
+    let process_date =
+        NaiveDate::from_ymd(valid_date.year, valid_date.month, valid_date.day).and_hms(0, 0, 0);
 
-    // Either::Left(Json(result))
-    Either::Left(Json(BadDataError {error: "".to_string()}))
+    let result = Timestamp {
+        unix: process_date.timestamp() * 1000,
+        utc: Utc::from_utc_datetime(&Utc, &process_date).to_string(),
+    };
+
+    HttpResponse::Ok().json(result)
 }
