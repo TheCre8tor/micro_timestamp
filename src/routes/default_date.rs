@@ -4,11 +4,11 @@ use chrono::{DateTime, Utc};
 
 pub async fn default_date() -> impl Responder {
     let date: DateTime<Utc> = Utc::now();
-    let seconds_to_milli = date.timestamp() * 1000;
+    let seconds_to_milli = date.timestamp();
 
     let response = Timestamp {
         unix: seconds_to_milli,
-        utc: date.to_string(),
+        utc: date.to_rfc2822().to_string(),
     };
 
     Json(response)

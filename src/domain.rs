@@ -1,6 +1,5 @@
 use serde::Deserialize;
-use chrono::{DateTime, TimeZone, Utc};
-use std::time::{SystemTime, UNIX_EPOCH, Duration};
+use chrono::{DateTime, NaiveDateTime, Utc};
 
 #[derive(Deserialize, Debug)]
 pub struct DateParamName {
@@ -46,6 +45,11 @@ fn date_route(date: &String) -> Result<DateParamName, String> {
     //       it contains 0, return error of type Err, else
     //       return DateParamName.
     return if date_list.len().eq(&3) {
+        // 4. Validate if Y:M:D values is not greater than expected
+        if date_list[0] < 0 || date_list[1] > 12 || date_list[2] > 31 {
+            return Err(format!("{} is not a valid date", date));
+        }
+
         if date_list.contains(&0i32) {
             Err(format!("{} is not a valid date", date))
         } else {
@@ -61,11 +65,18 @@ fn date_route(date: &String) -> Result<DateParamName, String> {
 }
 
 fn unix_timestamp_route(date: &String) -> Result<DateParamName, String> {
-    let timestamp = UNIX_EPOCH + Duration::from_secs(1336435200000 / 1000);
-    let datetime = DateTime::<Utc>::from(timestamp);
-    let timestam_str = datetime.format("%Y-%m-%d %H:%M:%S.%f").to_string();
+    let parse_timestamp = match date.parse::<i64>() {
+        Ok(timestamp) => timestamp,
+        Err(_) => return Err(format!("Enter a valid unix timestamp"))
+    };
 
-    println!("{}", timestam_str);
+    let timestamp = match NaiveDateTime::from_timestamp_opt(parse_timestamp, 0) {
+        Some(datetime) => datetime,
+        None => return Err(format!("Date out of range"))
+    };
 
-    Err(format!("{} is not a valid date", date))
+    let datetime = DateTime::<Utc>::from_utc(timestamp, Utc);
+    let timestamp_str = datetime.format("%Y-%m-%d").to_string();
+
+    date_route(&timestamp_str)
 }

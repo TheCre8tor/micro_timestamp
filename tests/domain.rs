@@ -24,8 +24,22 @@ mod test {
 
     #[test]
     fn should_return_success_if_params_contain_valid_unix_code() {
-        let valid_unix_code = "790819200000".to_string();
+        let valid_unix_code = "790819200".to_string();
         let result = DateParamName::parse(&valid_unix_code);
         assert_ok!(result);
+    }
+
+    #[test]
+    fn should_return_out_of_range_error_if_params_contain_an_invalid_unix_code() {
+        let valid_unix_code = "79081920055667744".to_string();
+        let result = DateParamName::parse(&valid_unix_code);
+        assert_err!(result);
+    }
+
+    #[test]
+    fn should_return_invalid_timestamp_error_if_params_contain_alphabets() {
+        let timestamp_with_alphabets = "850003200UIoP".to_string();
+        let result = DateParamName::parse(&timestamp_with_alphabets);
+        assert_err!(result);
     }
 }
