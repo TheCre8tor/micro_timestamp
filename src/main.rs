@@ -1,17 +1,14 @@
-use actix_web::{web, App, HttpServer};
-use micro_timestamp::routes::{convert_date, default_date};
+use micro_timestamp::startup;
 use std::io;
+use std::net::TcpListener;
+use micro_timestamp::configurations::get_configuration;
 
 #[tokio::main]
 async fn main() -> io::Result<()> {
-    HttpServer::new(|| {
-        App::new().service(
-            web::scope("/api")
-                .default_service(web::get().to(default_date))
-                .route("/{date}", web::get().to(convert_date)),
-        )
-    })
-    .bind("127.0.0.1:7070")?
-    .run()
-    .await
+    let configuration = get_configuration().expect("Failed to read configuration");
+
+    let address = format!("{}:{}", configuration.application.host, configuration.application.port);
+    let listener = TcpListener::bind(address)?;
+
+    startup::run(listener)?.await
 }

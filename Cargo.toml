@@ -9,6 +9,13 @@ edition = "2021"
 actix-web = "4.0.0-beta.16"
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 serde = "1.0.134"
+serde-aux = "3.0.1"
 chrono = "0.4.19"
 claim = "0.5.0"
-time = "0.3.7"
+config = "0.11.0"
+# System Application Logging Crates ->
+#tracing = { version = "0.1", features = ["log"] }
+#tracing-actix-web = "=0.5.0-beta.9"
+#tracing-subscriber = { version = "0.3", features = ["registry", "env-filter"] }
+#tracing-bunyan-formatter = "0.3"
+#tracing-log = "0.1"

@@ -3,7 +3,6 @@ use actix_web::{web, HttpResponse};
 use chrono::{NaiveDate, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Serialize, Debug)]
 pub struct Timestamp {
     pub unix: i64,
@@ -51,7 +50,9 @@ pub async fn convert_date(params: web::Path<DateParam>) -> HttpResponse {
 
     let result = Timestamp {
         unix: process_date.timestamp(),
-        utc: Utc::from_utc_datetime(&Utc, &process_date).to_rfc2822().to_string(),
+        utc: Utc::from_utc_datetime(&Utc, &process_date)
+            .to_rfc2822()
+            .to_string(),
     };
 
     HttpResponse::Ok().json(result)

@@ -1,5 +1,5 @@
-use serde::Deserialize;
 use chrono::{DateTime, NaiveDateTime, Utc};
+use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub struct DateParamName {
@@ -67,12 +67,12 @@ fn date_route(date: &String) -> Result<DateParamName, String> {
 fn unix_timestamp_route(date: &String) -> Result<DateParamName, String> {
     let parse_timestamp = match date.parse::<i64>() {
         Ok(timestamp) => timestamp,
-        Err(_) => return Err(format!("Enter a valid unix timestamp"))
+        Err(_) => return Err(format!("Enter a valid unix timestamp")),
     };
 
     let timestamp = match NaiveDateTime::from_timestamp_opt(parse_timestamp, 0) {
         Some(datetime) => datetime,
-        None => return Err(format!("Date out of range"))
+        None => return Err(format!("Date out of range")),
     };
 
     let datetime = DateTime::<Utc>::from_utc(timestamp, Utc);
