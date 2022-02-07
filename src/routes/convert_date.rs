@@ -39,7 +39,6 @@ pub async fn convert_date(params: web::Path<DateParam>) -> HttpResponse {
     Elite: /api/2021-04-09 -- Done
     Elite: /api/1451001600000
     1. */
-
     let valid_date = match DateParamName::parse(&params.date) {
         Ok(value) => value,
         Err(error) => return HttpResponse::BadRequest().json(BadDataError { error }),
