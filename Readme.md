@@ -21,14 +21,12 @@
 ❯ http http://127.0.0.1:6070/api/
 ```
 
-```js
+```json
 HTTP/1.1 200 OK
 content-length: 59
 content-type: application/json
 date: Mon, 07 Feb 2022 07:35:11 GMT
-```
 
-```json
 {
   "unix": 1644219311,
   "utc": "Mon, 07 Feb 2022 07:35:11 +0000"
