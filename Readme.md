@@ -4,9 +4,9 @@
    Kindly run test before starting the server to
    be very sure all app logic works as expected
 
-```
-cargo test
-```
+   ```
+   cargo test
+   ```
 
 2. Start Server
    Run cargo run - To start the server
@@ -21,10 +21,12 @@ cargo test
 ❯ http http://127.0.0.1:6070/api/
 ```
 
+```js
 HTTP/1.1 200 OK
 content-length: 59
 content-type: application/json
 date: Mon, 07 Feb 2022 07:35:11 GMT
+```
 
 ```json
 {
