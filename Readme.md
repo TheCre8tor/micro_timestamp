@@ -15,6 +15,21 @@ cargo run
 ### 3. Endpoints & Sample Response
 
 ```
+❯ http | GET | http://127.0.0.1:6070/health_check
+```
+
+```json
+HTTP/1.1 200 OK
+content-length: 24
+content-type: application/json
+date: Mon, 07 Feb 2022 08:10:07 GMT
+
+{
+    "message": "I'm Alive!"
+}
+```
+
+```
 ❯ http | GET | http://127.0.0.1:6070/api/
 ```
 
