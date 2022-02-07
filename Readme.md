@@ -2,22 +2,17 @@
 
 ### 1. Test
 
-Kindly run test before starting the server to
-be very sure all app logic works as expected
-
 ```
 cargo test
 ```
 
 ### 2. Start Server
 
-Run cargo run - To start the server
-
 ```
 cargo run
 ```
 
-### 3. Endpoints & APIs Response
+### 3. Endpoints & Sample Response
 
 ```
 ❯ http | GET | http://127.0.0.1:6070/api/
