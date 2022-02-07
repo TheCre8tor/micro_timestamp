@@ -1,21 +1,23 @@
 # Micro Timestamp
 
-1. Test
-   Kindly run test before starting the server to
-   be very sure all app logic works as expected
+### 1. Test
 
-   ```
-   cargo test
-   ```
+Kindly run test before starting the server to
+be very sure all app logic works as expected
 
-2. Start Server
-   Run cargo run - To start the server
+```
+cargo test
+```
 
-   ```
-   cargo run
-   ```
+### 2. Start Server
 
-3. Endpoints & APIs Response
+Run cargo run - To start the server
+
+```
+cargo run
+```
+
+### 3. Endpoints & APIs Response
 
 ```
 ❯ http | GET | http://127.0.0.1:6070/api/
